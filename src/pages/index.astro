@@ -1,0 +1,11 @@
+---
+import Greeting from "../components/Greeting";
+import BaseLayout from "../layouts/BaseLayout.astro";
+const pageTitle = "首页";
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  <h2>一起学习Astro!</h2>
+  <Greeting messages={["aaa", "bbb", "ccc", "ddd", "eee"]} />
+  <Greeting client:load messages={["aaa", "bbb", "ccc", "ddd", "eee"]} />
+</BaseLayout>

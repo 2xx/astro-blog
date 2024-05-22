@@ -1,0 +1,50 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
+const pageTitle = "关于页";
+const identity = {
+  name: "景水",
+  occupation: "讲师",
+  hobbies: ["美食", "美女", "美梦"],
+};
+
+const skills = ["HTML", "CSS", "JS", "React", "Vue", "Astro", "Writing Docs"];
+let isLoading = false;
+
+let skillColor = "red";
+let fontWeight = "bold";
+let textCase = "uppercase";
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  <style
+    define:vars={{
+      skillColor,
+      fontWeight,
+      textCase,
+    }}
+  >
+    /* 定义样式 */
+    h1 {
+      color: purple;
+      font-size: 4rem;
+    }
+    .skill {
+      color: var(--skillColor);
+      font-weight: var(--fontWeight);
+      text-transform: var(--textCase);
+    }
+  </style>
+  <h2>我的信息</h2>
+  <p>我的名称: {identity.name}</p>
+  <p>我是一名: {identity.occupation}</p>
+  <p>我的爱好之一是 {identity.hobbies[2]}</p>
+  <h2>我的技术栈</h2>
+  <ul>
+    {skills.map((skill) => <li class="skill">{skill}</li>)}
+  </ul>
+  <h2>{isLoading ? "正在加载中..." : "普通状态"}</h2>
+  <h2>{isLoading && "正在加载中..."}</h2>
+</BaseLayout>

@@ -1,0 +1,39 @@
+---
+import BlogPost from "../../components/BlogPost.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+// 在页面初次加载时执行. 返回 [{'标签1':包含标签1的文章}, {'标签2':包含标签2的文章}]
+export async function getStaticPaths() {
+  console.log("----------");
+  // 获取所有文章
+  const allPosts = await Astro.glob("../posts/*.md");
+
+  // 获取所有标签(不重复的)
+  const tags = allPosts.map((post) => post.frontmatter.tags);
+  const flatTags = tags.flat();
+  const uniqueTags = [...new Set(flatTags)];
+
+  // 获取标签对应的文章
+  return uniqueTags.map((tag) => {
+    const filteredPosts = allPosts.filter((post) =>
+      post.frontmatter.tags.includes(tag)
+    );
+
+    return { params: { tag }, props: { posts: filteredPosts } };
+  });
+}
+// 1.获取的要查看的标签
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<BaseLayout pageTitle={tag}>
+  <p>所有包含{tag}的文章列表</p>
+  <ul>
+    {
+      posts.map((post) => (
+        <BlogPost url={post.url} title={post.frontmatter.title} />
+      ))
+    }
+  </ul>
+</BaseLayout>
